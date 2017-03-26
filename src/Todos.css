@@ -5,6 +5,7 @@ button {
 	margin: 0;
 	padding: 0;
 	border: 0;
+	display: block;
 	background: none;
 	font-size: 100%;
 	vertical-align: baseline;
@@ -120,7 +121,7 @@ label[for='toggle-all'] {
 .toggle-all {
 	position: absolute;
 	top: 15px;
-	left: -14px;
+	left: -8px;
 	width: 60px;
 	height: 34px;
 	text-align: center;
