@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
-import App from './reduxExample/App';
+import AccountMain from './reduxExample/AccountMain';
 
 render(
-    <App />
+    <AccountMain />
     , document.getElementById('root')
 );
 

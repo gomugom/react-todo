@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import InputBox from './InputBox';
 import AccountBook from './AccountBook';
+import { connect } from 'react-redux';
+import bankAction from '../actions/bankAction';
+
+const mapStateToProps = state => ({
+    accountList: state.accountList
+});
+const mapDispatchToProps = dispatch => ({
+    calc: (type, money) => dispatch(bankAction[type](money))
+});
 
 class App extends Component {
-    constructor() {
-        super();
-        this.state = {
-            accountList : []
-        }
-    }
     calc(type, money) {
         money = money * 1;
         if(typeof money !== 'number') return;
@@ -23,15 +26,19 @@ class App extends Component {
         });
     }
     render() {
+        const {
+            accountList,
+            calc
+        } = this.props;
         return (
             <div>
                 <InputBox
-                    calc={(type, money) => this.calc(type, money)}
+                    calc={calc}
                 />
-                <AccountBook accountList={this.state.accountList} />
+                <AccountBook accountList={accountList} />
             </div>
         )
     }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
