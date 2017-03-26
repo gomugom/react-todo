@@ -1,37 +1,31 @@
 import React, { Component } from 'react';
 import InputBox from './InputBox';
 import AccountBook from './AccountBook';
+import Tabs from './Tabs';
 import { connect } from 'react-redux';
 import bankAction from '../actions/bankAction';
+import tabAction from '../actions/tabAction';
 
 const mapStateToProps = state => ({
-    accountList: state.accountList
+    accountList: state.account.accountList,
+    focused: state.tab.focused
 });
 const mapDispatchToProps = dispatch => ({
-    calc: (type, money) => dispatch(bankAction[type](money))
+    calc: (type, money) => dispatch(bankAction[type](money)),
+    changeTab: index => dispatch(tabAction.changeTab(index))
 });
 
 class App extends Component {
-    calc(type, money) {
-        money = money * 1;
-        if(typeof money !== 'number') return;
-        const prevAccount = this.state.accountList;
-        const lastResult = prevAccount.length ? (prevAccount[prevAccount.length - 1].result) : 0;
-        this.setState({
-            accountList: [...this.state.accountList, {
-                type: 'save',
-                money,
-                result: lastResult + (type === 'save' ? 1 : -1) * money
-            }]
-        });
-    }
     render() {
         const {
             accountList,
-            calc
+            calc,
+            focused,
+            changeTab
         } = this.props;
         return (
             <div>
+                <Tabs focused={focused} changeTab={changeTab}/>
                 <InputBox
                     calc={calc}
                 />
