@@ -22,7 +22,8 @@ class App extends Component {
                     text: '피자에 파스타',
                     isDone: true
                 }
-            ]
+            ],
+            editingId: null
         };
     }
     addTodo(text) {
@@ -42,15 +43,80 @@ class App extends Component {
             todos: newTodos
         });
     }
+    editTodo(id) {
+        this.setState({
+            editingId: id
+        });
+    }
+    saveTodo(id, newText) {
+        const newTodos = [...this.state.todos];
+        const editIndex = newTodos.findIndex(v => v.id === id);
+        newTodos[editIndex] = Object.assign({}, newTodos[editIndex], {
+            text: newText
+        });
+        this.setState({
+            todos: newTodos,
+            editingId: null
+        });
+    }
+    cancelEdit() {
+        this.setState({
+            editingId: null
+        });
+    }
+    toggleTodo(id) {
+        const newTodos = [...this.state.todos];
+        const editIndex = newTodos.findIndex(v => v.id === id);
+        newTodos[editIndex] = Object.assign({}, newTodos[editIndex], {
+            isDone: !newTodos[editIndex].isDone
+        });
+        this.setState({
+            todos: newTodos
+        });
+    }
+    toggleAll() {
+        const newDone = !this.state.todos.every(v => v.isDone);
+        const newTodos = this.state.todos.map(v => {
+            v.isDone = newDone;
+            return v;
+        });
+        this.setState({
+            todos: newTodos
+        });
+    }
+    clearCompleted() {
+        const newTodos = this.state.todos.filter(v => !v.isDone);
+        this.setState({
+            todos: newTodos
+        });
+    }
+
     render() {
+        const {
+            todos,
+            editingId
+        } = this.state;
+
         return (
             <div className="todo-app">
-                <Header addTodo={text => this.addTodo(text)} />
-                <TodoList
-                    todos={this.state.todos}
-                    deleteTodo={id => this.deleteTodo(id)}
+                <Header
+                    addTodo={text => this.addTodo(text)}
+                    toggleAll={() => this.toggleAll()}
+                    isAllDone={todos.every(v => v.isDone)}
                 />
-                <Footer />
+                <TodoList
+                    todos={todos}
+                    editingId={editingId}
+                    deleteTodo={id => this.deleteTodo(id)}
+                    editTodo={id => this.editTodo(id)}
+                    saveTodo={(id, newText) => this.saveTodo(id, newText)}
+                    cancelEdit={() => this.cancelEdit()}
+                    toggleTodo={id => this.toggleTodo(id)}
+                />
+                <Footer
+                    completedLength={todos.filter(v => v.isDone).length}
+                    clearCompleted={() => this.clearCompleted()}
+                />
             </div>
         );
     }

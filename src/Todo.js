@@ -1,28 +1,62 @@
 import React, { Component } from 'react';
 
-const Todo = ({
-    text,
-    isDone,
-    deleteTodo
-}) => {
-    return (
-        <li className="todo-item">
-            <button className="toggle" />
-            <div className="todo-item__view">
-                <div className="todo-item__view__text">
-                    {text}
-                </div>
+class Todo extends Component {
+    componentDidUpdate(prevProps) {
+        if(this.props.isEditing && !prevProps.isEditing) {
+            this.inputDom.focus();
+            this.inputDom.value = this.props.text;
+        }
+    }
+    handleKeyDown(e) {
+        const text = e.target.value;
+        if(!text || e.keyCode !== 13) return;
+        this.props.saveTodo(text);
+        e.target.value = '';
+    }
+
+    render() {
+        const {
+            text,
+            isDone,
+            isEditing,
+            deleteTodo,
+            editTodo,
+            cancelEdit,
+            toggleTodo
+        } = this.props;
+
+        return (
+            <li className={[
+                "todo-item",
+                isEditing ? ' editing' : '',
+                isDone ? ' completed' : ''
+            ].join('')}>
                 <button
-                    className="todo-item__destroy"
-                    onClick={deleteTodo}
+                    className="toggle"
+                    onClick={toggleTodo}
                 />
-            </div>
-            <input
-                className="todo-item__edit"
-                type="text"
-            />
-        </li>
-    );
+                <div className="todo-item__view">
+                    <div
+                        className="todo-item__view__text"
+                        onDoubleClick={editTodo}
+                    >
+                        {text}
+                    </div>
+                    <button
+                        className="todo-item__destroy"
+                        onClick={deleteTodo}
+                    />
+                </div>
+                <input
+                    className="todo-item__edit"
+                    type="text"
+                    ref={ref => { this.inputDom = ref }}
+                    onKeyDown={e => this.handleKeyDown(e)}
+                    onBlur={cancelEdit}
+                />
+            </li>
+        );
+    }
 }
 
 export default Todo;
