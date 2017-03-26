@@ -1,47 +1,47 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import Header from './Header';
 import TodoList from './TodoList';
 import Footer from './Footer';
 
+const ax = axios.create({
+    baseURL: 'http://localhost:2403/todos',
+    timeout: 1000
+});
+
 class App extends Component {
     constructor() {
         super();
         this.state = {
-            todos: [
-                {
-                    id: 1,
-                    text: '치킨에 맥주',
-                    isDone: false
-                }, {
-                    id: 2,
-                    text: '삼겹살에 쏘주',
-                    isDone: false
-                }, {
-                    id: 3,
-                    text: '피자에 파스타',
-                    isDone: true
-                }
-            ],
+            todos: [],
             editingId: null,
             filterName: 'All'
         };
     }
-    addTodo(text) {
-        this.setState({
-            todos: [ ...this.state.todos, {
-                id: Date.now(),
-                text,
-                isDone: false
-            }]
+    componentWillMount() {
+        ax.get('/').then(res => {
+            this.setState({
+                todos: res.data
+            });
         });
+    }
+    addTodo(text) {
+        ax.post('/', { text }).then(res => {
+            this.setState({
+                todos: [ ...this.state.todos, res.data ]
+            });
+        })
     }
     deleteTodo(id) {
         const newTodos = [...this.state.todos];
         const deleteIndex = newTodos.findIndex(v => v.id === id);
-        newTodos.splice(deleteIndex, 1);
-        this.setState({
-            todos: newTodos
+
+        ax.delete(`/${id}`).then(() => {
+            newTodos.splice(deleteIndex, 1);
+            this.setState({
+                todos: newTodos
+            });
         });
     }
     editTodo(id) {
@@ -52,13 +52,16 @@ class App extends Component {
     saveTodo(id, newText) {
         const newTodos = [...this.state.todos];
         const editIndex = newTodos.findIndex(v => v.id === id);
-        newTodos[editIndex] = Object.assign({}, newTodos[editIndex], {
+
+        ax.put(`/${id}`, {
             text: newText
-        });
-        this.setState({
-            todos: newTodos,
-            editingId: null
-        });
+        }).then(res => {
+            newTodos[editIndex] = res.data;
+            this.setState({
+                todos: newTodos,
+                editingId: null
+            });
+        })
     }
     cancelEdit() {
         this.setState({
@@ -68,27 +71,39 @@ class App extends Component {
     toggleTodo(id) {
         const newTodos = [...this.state.todos];
         const editIndex = newTodos.findIndex(v => v.id === id);
-        newTodos[editIndex] = Object.assign({}, newTodos[editIndex], {
-            isDone: !newTodos[editIndex].isDone
-        });
-        this.setState({
-            todos: newTodos
+        const newDone = !newTodos[editIndex].isDone;
+
+        ax.put(`/${id}`, {
+            isDone: newDone
+        }).then(res => {
+            newTodos.splice(editIndex, 1, res.data);
+            this.setState({
+                todos: newTodos
+            });
         });
     }
     toggleAll() {
         const newDone = !this.state.todos.every(v => v.isDone);
-        const newTodos = this.state.todos.map(v => {
-            v.isDone = newDone;
-            return v;
-        });
-        this.setState({
-            todos: newTodos
+        const axArray = this.state.todos.map(v => ax.put(`/${v.id}`, {
+            isDone: newDone
+        }));
+
+        axios.all(axArray).then(res => {
+            this.setState({
+                todos: res.map(r => r.data)
+            });
         });
     }
     clearCompleted() {
+        const axArray = this.state.todos
+            .filter(v => v.isDone)
+            .map(v => ax.delete(`/${v.id}`));
         const newTodos = this.state.todos.filter(v => !v.isDone);
-        this.setState({
-            todos: newTodos
+
+        axios.all(axArray).then(() => {
+            this.setState({
+                todos: newTodos
+            });
         });
     }
     selectFilter(filterName) {

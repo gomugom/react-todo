@@ -12,6 +12,7 @@
     "start": "node ./server.js"
   },
   "devDependencies": {
+    "axios": "^0.15.3",
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",
     "babel-preset-latest": "^6.24.0",
