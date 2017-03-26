@@ -25,7 +25,7 @@ const Footer = ({
         <div className="footer">
             <span className="todo-count">
                 <strong>{activeLength}</strong>{' '}
-                <span>item{activeLength === 1 ? 's' : ''}</span>{' '}
+                <span>item{activeLength === 1 ? '' : 's'}</span>{' '}
                 left
             </span>
             <ul className="todo-filters">

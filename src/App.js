@@ -104,7 +104,7 @@ class App extends Component {
             filterName
         } = this.state;
 
-        const completedLength = todos.filter(v => v.isDone);
+        const completedLength = todos.filter(v => v.isDone).length;
         const activeLength = todos.length - completedLength;
 
         const filteredTodos = (filterName === 'All')
