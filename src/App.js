@@ -23,7 +23,8 @@ class App extends Component {
                     isDone: true
                 }
             ],
-            editingId: null
+            editingId: null,
+            filterName: 'All'
         };
     }
     addTodo(text) {
@@ -90,12 +91,28 @@ class App extends Component {
             todos: newTodos
         });
     }
+    selectFilter(filterName) {
+        this.setState({
+            filterName
+        });
+    }
 
     render() {
         const {
             todos,
-            editingId
+            editingId,
+            filterName
         } = this.state;
+
+        const completedLength = todos.filter(v => v.isDone);
+        const activeLength = todos.length - completedLength;
+
+        const filteredTodos = (filterName === 'All')
+            ? todos
+            : todos.filter(todo => (
+                (filterName === 'Active' && !todo.isDone)
+                || (filterName === 'Completed' && todo.isDone)
+            ));
 
         return (
             <div className="todo-app">
@@ -105,7 +122,7 @@ class App extends Component {
                     isAllDone={todos.every(v => v.isDone)}
                 />
                 <TodoList
-                    todos={todos}
+                    todos={filteredTodos}
                     editingId={editingId}
                     deleteTodo={id => this.deleteTodo(id)}
                     editTodo={id => this.editTodo(id)}
@@ -114,7 +131,10 @@ class App extends Component {
                     toggleTodo={id => this.toggleTodo(id)}
                 />
                 <Footer
-                    completedLength={todos.filter(v => v.isDone).length}
+                    activeLength={activeLength}
+                    completedLength={completedLength}
+                    filterName={filterName}
+                    selectFilter={filterName => this.selectFilter(filterName)}
                     clearCompleted={() => this.clearCompleted()}
                 />
             </div>
