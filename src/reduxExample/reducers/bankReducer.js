@@ -26,6 +26,16 @@ const bankReducer = (state = {accountList: []}, action) => {
                 }]
             };
         }
+        case 'SHOW_EFFECT': {
+            return Object.assign({}, state, {
+                effect: true
+            });
+        }
+        case 'HIDE_EFFECT': {
+            return Object.assign({}, state, {
+                effect: false
+            });
+        }
         default: return state;
     }
 }
