@@ -14,18 +14,49 @@ const TodoReducer = (state = initialState, action) => {
                 }
             });
         }
-        case 'ADD_TODO': {
+        case 'ADD_TODO_TEMPORAL': {
             return update(state, {
                 todos: {
                     $push: [ action.newTodo ]
                 }
             });
         }
-        case 'DELETE_TODO': {
+        case 'ADD_TODO_SUCCESS': {
+            const temporalIndex = state.todos.findIndex(v => v.id === action.temporalId);
+            return update(state, {
+                todos: {
+                    [temporalIndex]: {
+                        id: {
+                            $set: action.realTodo.id
+                        }
+                    }
+                }
+            });
+        }
+        case 'ADD_TODO_FAILED': {
+            const temporalIndex = state.todos.findIndex(v => v.id === action.temporalId);
             return update(state, {
                 todos: {
                     $splice: [
-                        [ state.todos.findIndex(v => v.id === action.id), 1]
+                        [ temporalIndex, 1 ]
+                    ]
+                }
+            });
+        }
+        case 'DELETE_TODO_TEMPORAL': {
+            return update(state, {
+                todos: {
+                    $splice: [
+                        [ action.deleteIndex, 1 ]
+                    ]
+                }
+            });
+        }
+        case 'DELETE_TODO_FAILED': {
+            return update(state, {
+                todos: {
+                    $splice: [
+                        [ action.deleteIndex, 0, action.todo ]
                     ]
                 }
             });
@@ -37,7 +68,21 @@ const TodoReducer = (state = initialState, action) => {
                 }
             });
         }
-        case 'SAVE_TODO': {
+        case 'SAVE_TODO_TEMPORAL': {
+            return update(state, {
+                todos: {
+                    [state.todos.findIndex(v => v.id === action.id)]: {
+                        text: {
+                            $set: action.text
+                        }
+                    }
+                },
+                editingId: {
+                    $set: null
+                }
+            });
+        }
+        case 'SAVE_TODO_SUCCESS': {
             return update(state, {
                 todos: {
                     [state.todos.findIndex(v => v.id === action.id)]: {
@@ -49,6 +94,18 @@ const TodoReducer = (state = initialState, action) => {
                 }
             });
         }
+        case 'SAVE_TODO_FAILED': {
+            return update(state, {
+                todos: {
+                    [state.todos.findIndex(v => v.id === action.id)]: {
+                        $set: action.editedTodo
+                    }
+                },
+                editingId: {
+                    $set: action.id
+                }
+            });
+        }
         case 'CANCEL_EDIT': {
             return update(state, {
                 editingId: {
@@ -56,26 +113,40 @@ const TodoReducer = (state = initialState, action) => {
                 }
             });
         }
-        case 'TOGGLE_TODO': {
+        case 'TOGGLE_TODO_TEMPORAL': {
             return update(state, {
                 todos: {
                     [state.todos.findIndex(v => v.id === action.id)]: {
-                        $set: action.editedTodo
+                        isDone: {
+                            $set: action.isDone
+                        }
                     }
                 }
             });
         }
-        case 'TOGGLE_ALL': {
+        case 'TOGGLE_TODO_SUCCESS':
+        case 'TOGGLE_TODO_FAILED': {
+            return update(state, {
+                todos: {
+                    [state.todos.findIndex(v => v.id === action.id)]: {
+                        $set: action.toggleTodo
+                    }
+                }
+            });
+        }
+        case 'TOGGLE_ALL_TEMPORAL':
+        case 'TOGGLE_ALL_FAILED': {
             return update(state, {
                 todos: {
                     $set: action.editedTodos
                 }
             });
         }
-        case 'CLEAR_COMPLETED': {
+        case 'CLEAR_COMPLETED_TEMPORAL':
+        case 'CLEAR_COMPLETED_FAILED': {
             return update(state, {
                 todos: {
-                    $apply: todos => todos.filter(v => !v.isDone)
+                    $set: action.todos
                 }
             });
         }

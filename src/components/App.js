@@ -14,11 +14,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     getTodos       : () => dispatch(TodoActions.getTodos()),
     addTodo        : text => dispatch(TodoActions.addTodo(text)),
+    deleteTodo     : (todos, todo) => dispatch(TodoActions.deleteTodo(todos, todo)),
     editTodo       : id => dispatch(TodoActions.editTodo(id)),
-    saveTodo       : (id, newText) => dispatch(TodoActions.saveTodo(id, newText)),
+    saveTodo       : (todo, newText) => dispatch(TodoActions.saveTodo(todo, newText)),
     cancelEdit     : () => dispatch(TodoActions.cancelEdit()),
-    deleteTodo     : id => dispatch(TodoActions.deleteTodo(id)),
-    toggleTodo     : (id, newDone) => dispatch(TodoActions.toggleTodo(id, newDone)),
+    toggleTodo     : (todo, newDone) => dispatch(TodoActions.toggleTodo(todo, newDone)),
     toggleAll      : todos => dispatch(TodoActions.toggleAll(todos)),
     clearCompleted : todos => dispatch(TodoActions.clearCompleted(todos))
 });
@@ -65,7 +65,7 @@ class App extends Component {
                 <TodoList
                     todos={filteredTodos}
                     editingId={editingId}
-                    deleteTodo={deleteTodo}
+                    deleteTodo={todo => deleteTodo(todos, todo)}
                     editTodo={editTodo}
                     saveTodo={saveTodo}
                     cancelEdit={cancelEdit}

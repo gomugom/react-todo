@@ -10,18 +10,18 @@ const TodoList = ({
     cancelEdit,
     toggleTodo
 }) => {
-    const todoList = todos.map(({ id, text, isDone }) => (
+    const todoList = todos.map(todo => (
         <Todo
-            key={`todo#${id}`}
-            text={text}
-            isDone={isDone}
-            isEditing={editingId === id}
-            deleteTodo={() => deleteTodo(id)}
-            editTodo={() => editTodo(id)}
-            saveTodo={text => saveTodo(id, text)}
+            key={`todo#${todo.id}`}
+            text={todo.text}
+            isDone={todo.isDone}
+            isEditing={editingId === todo.id}
+            deleteTodo={() => deleteTodo(todo)}
+            editTodo={() => editTodo(todo.id)}
+            saveTodo={text => saveTodo(todo, text)}
             cancelEdit={cancelEdit}
-            deleteTodo={() => deleteTodo(id)}
-            toggleTodo={() => toggleTodo(id, !isDone)}
+            deleteTodo={() => deleteTodo(todo)}
+            toggleTodo={() => toggleTodo(todo, !todo.isDone)}
         />
     ));
     return (
