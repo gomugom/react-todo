@@ -14,7 +14,9 @@ const mapDispatchToProps = dispatch => ({
 class App extends Component {
     calc(type, money) {
         money = money * 1;
-        if(typeof money !== 'number') return;
+        if(typeof money !== 'number') {
+            return;
+        }
         const prevAccount = this.state.accountList;
         const lastResult = prevAccount.length ? (prevAccount[prevAccount.length - 1].result) : 0;
         this.setState({
@@ -37,7 +39,7 @@ class App extends Component {
                 />
                 <AccountBook accountList={accountList} />
             </div>
-        )
+        );
     }
 }
 

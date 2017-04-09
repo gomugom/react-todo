@@ -22,7 +22,7 @@ class AccountBook extends Component {
                     {tableData}
                 </tbody>
             </table>
-        )
+        );
     }
 }
 
