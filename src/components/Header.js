@@ -4,7 +4,9 @@ import ClassNames from 'classnames';
 class Header extends Component {
     handleKeyDown(e) {
         const text = e.target.value;
-        if (!text || e.keyCode !== 13) return;
+        if (!text || e.keyCode !== 13) {
+            return;
+        }
         this.props.addTodo(text);
         e.target.value = '';
     }
@@ -24,7 +26,7 @@ class Header extends Component {
                 />
                 <button
                     className={ClassNames('toggle-all', {
-                        checked : isAllDone
+                        checked: isAllDone
                     })}
                     onClick={toggleAll}
                 />

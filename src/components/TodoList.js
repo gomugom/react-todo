@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Todo from './Todo';
 
 const TodoList = ({
@@ -21,7 +21,7 @@ const TodoList = ({
             saveTodo={text => saveTodo(id, text)}
             cancelEdit={cancelEdit}
             deleteTodo={() => deleteTodo(id)}
-            toggleTodo={() => toggleTodo(id, !isDone)}
+            toggleTodo={() => toggleTodo(id)}
         />
     ));
     return (
@@ -31,6 +31,6 @@ const TodoList = ({
             </ul>
         </div>
     );
-}
+};
 
 export default TodoList;

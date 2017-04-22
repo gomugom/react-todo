@@ -12,15 +12,15 @@ const mapStateToProps = state => ({
     editingId: state.editingId
 });
 const mapDispatchToProps = dispatch => ({
-    getTodos       : () => dispatch(TodoActions.getTodos()),
-    addTodo        : text => dispatch(TodoActions.addTodo(text)),
-    editTodo       : id => dispatch(TodoActions.editTodo(id)),
-    saveTodo       : (id, newText) => dispatch(TodoActions.saveTodo(id, newText)),
-    cancelEdit     : () => dispatch(TodoActions.cancelEdit()),
-    deleteTodo     : id => dispatch(TodoActions.deleteTodo(id)),
-    toggleTodo     : (id, newDone) => dispatch(TodoActions.toggleTodo(id, newDone)),
-    toggleAll      : todos => dispatch(TodoActions.toggleAll(todos)),
-    clearCompleted : todos => dispatch(TodoActions.clearCompleted(todos))
+    getTodos: () => dispatch(TodoActions.getTodos()),
+    addTodo: text => dispatch(TodoActions.addTodo(text)),
+    editTodo: id => dispatch(TodoActions.editTodo(id)),
+    saveTodo: (id, newText) => dispatch(TodoActions.saveTodo(id, newText)),
+    cancelEdit: () => dispatch(TodoActions.cancelEdit()),
+    deleteTodo: id => dispatch(TodoActions.deleteTodo(id)),
+    toggleTodo: id => dispatch(TodoActions.toggleTodo(id)),
+    toggleAll: () => dispatch(TodoActions.toggleAll()),
+    clearCompleted: () => dispatch(TodoActions.clearCompleted())
 });
 
 class App extends Component {
@@ -59,7 +59,7 @@ class App extends Component {
             <div className="todo-app">
                 <Header
                     addTodo={addTodo}
-                    toggleAll={() => toggleAll(todos)}
+                    toggleAll={toggleAll}
                     isAllDone={todos.every(v => v.isDone)}
                 />
                 <TodoList
@@ -75,7 +75,7 @@ class App extends Component {
                     activeLength={activeLength}
                     completedLength={completedLength}
                     filterName={filterName}
-                    clearCompleted={() => clearCompleted(todos)}
+                    clearCompleted={clearCompleted}
                 />
             </div>
         );
