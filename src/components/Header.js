@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import ClassNames from 'classnames';
 
 class Header extends Component {
-    handleKeyDown(e) {
+    handleKeyDown = e => {
         const text = e.target.value;
-        if (!text || e.keyCode !== 13) return;
+        if (!text || e.keyCode !== 13) {
+            return;
+        }
         this.props.addTodo(text);
         e.target.value = '';
-    }
+    };
+
     render() {
         const {
             toggleAll,
@@ -20,11 +23,11 @@ class Header extends Component {
                     type="text"
                     className="todo-app__new-todo"
                     placeholder="What needs to be done?"
-                    onKeyDown={e => this.handleKeyDown(e)}
+                    onKeyDown={this.handleKeyDown}
                 />
                 <button
                     className={ClassNames('toggle-all', {
-                        checked : isAllDone
+                        checked: isAllDone
                     })}
                     onClick={toggleAll}
                 />

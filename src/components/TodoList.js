@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Todo from './Todo';
 
 const TodoList = ({
@@ -10,18 +10,18 @@ const TodoList = ({
     cancelEdit,
     toggleTodo
 }) => {
-    const todoList = todos.map(todo => (
+    const todoList = todos.map(({id, text, isDone}) => (
         <Todo
-            key={`todo#${todo.id}`}
-            text={todo.text}
-            isDone={todo.isDone}
-            isEditing={editingId === todo.id}
-            deleteTodo={() => deleteTodo(todo)}
-            editTodo={() => editTodo(todo.id)}
-            saveTodo={text => saveTodo(todo, text)}
+            key={`todo#${id}`}
+            text={text}
+            isDone={isDone}
+            isEditing={editingId === id}
+            deleteTodo={() => deleteTodo(id)}
+            editTodo={() => editTodo(id)}
+            saveTodo={text => saveTodo(id, text)}
             cancelEdit={cancelEdit}
-            deleteTodo={() => deleteTodo(todo)}
-            toggleTodo={() => toggleTodo(todo, !todo.isDone)}
+            deleteTodo={() => deleteTodo(id)}
+            toggleTodo={() => toggleTodo(id)}
         />
     ));
     return (
@@ -31,6 +31,6 @@ const TodoList = ({
             </ul>
         </div>
     );
-}
+};
 
 export default TodoList;
