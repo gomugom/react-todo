@@ -1,6 +1,6 @@
-var path = require('path');
+const path = require('path');
 const webpack = require('webpack');
-const webpackDevServer = require('webpack-dev-server');
+const WebpackDevServer = require('webpack-dev-server');
 const config = require('./webpack.config.js');
 
 const compiler = webpack(config);
@@ -20,7 +20,7 @@ const serverOptions = {
     }
 };
 
-const server = new webpackDevServer(compiler, serverOptions);
+const server = new WebpackDevServer(compiler, serverOptions);
 
 server.listen(8080, () => {
     console.log('now listening http://localhost:8080');

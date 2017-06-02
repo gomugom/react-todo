@@ -33,4 +33,4 @@ const withdraw = money => {
 export default {
     save,
     withdraw
-}
+};

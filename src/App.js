@@ -45,7 +45,7 @@ class App extends Component {
             todos: newTodos
         });
 
-        ax.delete(`/${id}`).catch(err => {
+        ax.delete(`/${id}`).catch(() => {
             this.setState({
                 todos: prevTodos
             });
@@ -71,7 +71,7 @@ class App extends Component {
             editingId: null
         });
 
-        ax.put(`/${id}`, { text: newText }).catch(err => {
+        ax.put(`/${id}`, { text: newText }).catch(() => {
             this.setState({
                 todos: prevTodos
             });
@@ -97,7 +97,7 @@ class App extends Component {
             todos: newTodos
         });
 
-        ax.put(`/${id}`, { isDone: newDone }).catch(err => {
+        ax.put(`/${id}`, { isDone: newDone }).catch(() => {
             this.setState({
                 todos: prevTodos
             });
@@ -120,7 +120,7 @@ class App extends Component {
         const axArray = prevTodos.map(v => ax.put(`/${v.id}`, {
             isDone: newDone
         }));
-        axios.all(axArray).catch(err => {
+        axios.all(axArray).catch(() => {
             this.setState({
                 todos: prevTodos
             });
@@ -138,7 +138,7 @@ class App extends Component {
         const axArray = this.state.todos
             .filter(v => v.isDone)
             .map(v => ax.delete(`/${v.id}`));
-        axios.all(axArray).catch(err => {
+        axios.all(axArray).catch(() => {
             this.setState({
                 todos: prevTodos
             });

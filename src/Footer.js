@@ -14,7 +14,7 @@ const Footer = ({
         <li key={`filter#${f}`}>
             <Link
                 className={ClassNames({
-                    'selected': filterName === f
+                    selected: filterName === f
                 })}
                 to={`/${f}`}
             >
@@ -35,7 +35,7 @@ const Footer = ({
             </ul>
             <button
                 className={ClassNames('todo-delete-completed', {
-                    hidden : !completedLength
+                    hidden: !completedLength
                 })}
                 onClick={clearCompleted}
             >
