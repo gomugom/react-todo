@@ -1,9 +1,8 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
 
-const HOST  = 'localhost';
-const PORT  = 8080;
-const URL   = `http://${HOST}:${PORT}`;
+const HOST = 'localhost';
+const PORT = 8080;
 const _PATH = resolve(__dirname, 'src');
 
 module.exports = {
