@@ -31,7 +31,7 @@ class App extends Component {
                 />
                 <AccountBook accountList={accountList} />
             </div>
-        )
+        );
     }
 }
 

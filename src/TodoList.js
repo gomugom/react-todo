@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Todo from './Todo';
 
 const TodoList = ({
@@ -31,6 +31,6 @@ const TodoList = ({
             </ul>
         </div>
     );
-}
+};
 
 export default TodoList;

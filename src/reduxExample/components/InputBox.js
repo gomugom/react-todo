@@ -9,19 +9,21 @@ class InputBox extends Component {
     render() {
         return (
             <div>
-                <input ref={ref=> this._input = ref} type="text"/>
+                <input ref={ref=> {
+                    this._input = ref;
+                }} type="text"/>
                 <button style={{
-                    display: "inline-block",
-                    border: "1px solid #000",
+                    display: 'inline-block',
+                    border: '1px solid #000',
                     marginLeft: 5
                 }} onClick={()=> this.calc('save')}>입금</button>
                 <button style={{
-                    display: "inline-block",
-                    border: "1px solid #000",
+                    display: 'inline-block',
+                    border: '1px solid #000',
                     marginLeft: 5
                 }} onClick={()=> this.calc('withdraw')}>출금</button>
             </div>
-        )
+        );
     }
 }
 
